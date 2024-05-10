@@ -9,7 +9,6 @@ const inter = Inter({ subsets: ["latin"] });
 
 
 export async function getServerSideProps() {
-  // const response = await fetch("https://flipboard.com/@raimoseero/feed-nii8kd0sz.rss")
   const parser = new Parser();
   try {
 
@@ -22,11 +21,11 @@ export async function getServerSideProps() {
       },
     };
 
-  } catch (error) { 
+  } catch (error) {
 
     return {
       props: {
-        data: {  },
+        data: {},
         error: "Error fetching data",
       },
     };
@@ -47,13 +46,18 @@ export default function Home({ data, error }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <div className={styles.bg}></div>
+      <header className={styles.header}>
+        <h1>Lola v5</h1> <button>Your feeds</button>
+      </header>
       <main className={`${styles.main} ${inter.className}`}>
         {data.map((item, index) => (
-          <div key={index}>
-            <h1>{item.title}</h1>
+          <a key={index} href={"#"}>
+            <h3>{item.title}</h3>
+            <h4>{item.author}</h4>
             <p>{item.contentSnippet}</p>
-            <p>{item.isoDate}</p>
-          </div>
+            <p>{new Date(item.isoDate).toLocaleDateString("en-GB")}</p>
+          </a>
         ))}
       </main>
     </>
