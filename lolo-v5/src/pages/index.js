@@ -47,7 +47,7 @@ export default function Home({ data, error }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className={styles.bg}></div>
-      <header className={styles.header}>
+      <header className={`${styles.header} ${inter.className}`}>
         <h1>Lola v5</h1> <button>Your feeds</button>
       </header>
       <main className={`${styles.main} ${inter.className}`}>
