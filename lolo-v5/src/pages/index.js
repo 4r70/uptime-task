@@ -1,11 +1,11 @@
 import Head from "next/head";
 import Image from "next/image";
-import { Inter } from "next/font/google";
+import { Montserrat } from "next/font/google";
 import styles from "@/styles/Home.module.css";
 
 import Parser from 'rss-parser';
 
-const inter = Inter({ subsets: ["latin"] });
+const montserrat = Montserrat({ subsets: ["latin"] });
 
 
 export async function getServerSideProps() {
@@ -46,19 +46,23 @@ export default function Home({ data, error }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className={styles.bg}></div>
-      <header className={`${styles.header} ${inter.className}`}>
+      <header className={`${styles.header} ${montserrat.className}`}>
         <h1>Lola v5</h1> <button>Your feeds</button>
       </header>
-      <main className={`${styles.main} ${inter.className}`}>
+      <main className={`${styles.main} ${montserrat.className}`}>
+        <div className={styles.headingRow}><h2 className={styles.title}>Your feed</h2><button className={styles.filterButton}>Filter</button></div>
         <div className={styles.articlesWrapper}>
-        {data.map((item, index) => (
-          <a className={styles.article} key={index} href={"#"}>
-            <h3>{item.title}</h3>
-            <h4>{item.author}</h4>
-            <p>{item.contentSnippet}</p>
-            <p>{new Date(item.isoDate).toLocaleDateString("en-GB")}</p>
-          </a>
-        ))}
+          {data.map((item, index) => (
+            <a className={styles.article} key={index} href={"#"}>
+              <h3 className={styles.articleTitle}>{item.title}</h3> 
+              {/* shorten the title if there is something that is too long, display on hover or smth */}
+              <p className={styles.articleSnippet}>{item.contentSnippet}</p>
+              <div className={styles.articleBottomRow}>
+                <h5 className={styles.articleAuthor}>{item.author}</h5>
+                <p className={styles.articleDate}>{new Date(item.isoDate).toLocaleDateString("en-GB")}</p>
+              </div>
+            </a>
+          ))}
         </div>
       </main>
     </>

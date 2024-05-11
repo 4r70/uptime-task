@@ -18,9 +18,8 @@
   padding: 6rem;
   min-height: 100vh;
   color: black;
+  margin: 0 10%;
 }
-
-
 
 .header {
   position: fixed;
@@ -28,16 +27,53 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  padding-inline: 10rem;
+  padding-inline: 10%;
   min-height: 5rem;
-  background-color: rgba(255, 255, 255, 0.3);
+  background-color: rgba(255, 255, 255, 0.8);
   box-shadow: 0 1.5rem 2rem rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(1rem);
+  z-index: 9999;
+}
+
+.headingRow {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+  margin-block: 3rem 2rem;
+}
+
+.title {
+  font-size: 1.25rem;
+  font-size: clamp(1.25rem, 1.1rem + 0.75vw, 2rem);
+  font-weight: 800;
+}
+
+.filterButton {
+  all: unset;
+  position: relative;
+  transform-style: preserve-3d;
+  border-radius: 0px;
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 1.5rem 2rem rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(1rem);
+  border-radius: 1rem;
+  padding: .75rem 4rem;
+  font-size: 1.25rem;
+  font-size: clamp(1.25rem, 1.2rem + 0.25vw, 1.5rem);
+  cursor: pointer;
+  transition: all .3s ease-in-out;
+}
+
+.filterButton:hover {
+  box-shadow: 0 1rem 1.5rem #FFBE0B;
+  scale: 1.01;
 }
 
 .articlesWrapper {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(30rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+  gap: 1.5rem;
 }
 
 .article:first-child {
@@ -46,5 +82,40 @@
 }
 
 .article {
-  border: 1px solid black;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  border-radius: 1rem;
+  background-color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(1rem);
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.1);
+  transition: all .3s ease-in-out;
 }
+
+.article:hover {
+  box-shadow: 0 1rem 1.5rem #FFBE0B;
+  scale: 1.01;
+}
+
+.articleTitle {
+  font-size: 1rem;
+font-size: clamp(1rem, 0.95rem + 0.25vw, 1.25rem);
+margin-bottom: .5rem;
+}
+
+.articleSnippet {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+.articleBottomRow {
+  display: flex;
+  justify-content: space-between;
+}
+
+.articleAuthor, .articleDate {
+  font-size: .75rem;
+  font-size: clamp(.75rem, 0.7rem + 0.25vw, 1rem);
+  font-weight: 500;
+}
+
