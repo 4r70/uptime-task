@@ -1,7 +1,12 @@
 import Head from "next/head";
 import Image from "next/image";
+import { useState } from "react";
+
+import Modal from "../components/modal.js";
+
 import { Montserrat } from "next/font/google";
-import styles from "@/styles/Home.module.css";
+
+import styles from "../styles/Home.module.css";
 
 import Parser from 'rss-parser';
 
@@ -33,6 +38,7 @@ export async function getServerSideProps() {
 }
 
 export default function Home({ data, error }) {
+  const [filterOpen, setFilterOpen] = useState(false);
   console.log(data)
   if (error) {
     console.log(error)
@@ -50,7 +56,10 @@ export default function Home({ data, error }) {
         <h1>Lola v5</h1> <button className={styles.feedsButton}>Your feeds</button>
       </header>
       <main className={`${styles.main} ${montserrat.className}`}>
-        <div className={styles.headingRow}><h2 className={styles.title}>Your feed</h2><button className={styles.filterButton}>Filter</button></div>
+        <div className={styles.headingRow}><h2 className={styles.title}>Your feed</h2><button onClick={() => setFilterOpen(true)} className={styles.filterButton}><Image className={styles.filterIcon} src={"/filter.svg"} width={26} height={26} />Filter</button></div>
+        <Modal isOpen={filterOpen} onClose={() => setFilterOpen(false)}>
+          <span>Filters</span>
+        </Modal>
         <div className={styles.articlesWrapper}>
           {data.map((item, index) => (
             <a className={styles.article} key={index} href={"#"}>
@@ -59,10 +68,10 @@ export default function Home({ data, error }) {
                   <span key={index} className={styles.categoryTag} data-category={category._}>{category._}</span>
                 ))}
               </div>
-              {item.link.endsWith(".jpg") || item.link.endsWith(".png") ||   item.link.endsWith(".jpeg")? (
+              {item.link.endsWith(".jpg") || item.link.endsWith(".png") || item.link.endsWith(".jpeg") ? (
                 <div className={styles.articleImageWrapper}>
                   <Image
-                  className={styles.articleImage}
+                    className={styles.articleImage}
                     src={item.link}
                     alt={item.title}
                     width={200}
@@ -70,7 +79,7 @@ export default function Home({ data, error }) {
                   />
                 </div>
               ) : null}
-              <h3 className={styles.articleTitle}>{item.title.length > 150 ? item.title.substring(0, 150) + "..." : item.title}</h3>
+              <h3 className={styles.articleTitle}>{index == 0 ? item.title : item.title.length > 100 ? item.title.substring(0, 100) + "..." : item.title}</h3>
               <p className={styles.articleSnippet}>{item.contentSnippet}</p>
               <div className={styles.articleBottomRow}>
                 <h5 className={styles.articleAuthor}>{item.author}</h5>

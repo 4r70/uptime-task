@@ -62,22 +62,25 @@
 .filterButton {
   all: unset;
   position: relative;
-  transform-style: preserve-3d;
-  border-radius: 0px;
-  background: rgba(255, 255, 255, 0.8);
+  background: white;
   box-shadow: 0 1.5rem 2rem rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(1rem);
   border-radius: 1rem;
   padding: .5em 2.75em;
   font-size: 1.25rem;
   font-size: clamp(1.25rem, 1.2rem + 0.25vw, 1.5rem);
   cursor: pointer;
   transition: all .3s ease-in-out;
+  display: flex;
+  align-items: center;
 }
 
 .filterButton:hover {
   box-shadow: 0 1rem 4rem #279AF1;
   scale: 1.01;
+}
+
+.filterIcon {
+  margin-right: .5rem;
 }
 
 .articlesWrapper {

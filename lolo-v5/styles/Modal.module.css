@@ -1,0 +1,37 @@
+.modalBg {
+    position: fixed;
+    z-index: 9999;
+    right: 0;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    place-content: center;
+}
+
+.modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    outline: transparent;
+}
+
+.modalBox {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 3rem;
+    background-color: white;
+    border-radius: 1rem;
+    width: 50rem;
+    padding: 2rem;
+}
+
+@media screen and (max-width: 60rem) {
+    .modalBox {
+        width: 100%;
+        padding: 2rem;
+    }
+}
