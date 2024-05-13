@@ -54,8 +54,23 @@ export default function Home({ data, error }) {
         <div className={styles.articlesWrapper}>
           {data.map((item, index) => (
             <a className={styles.article} key={index} href={"#"}>
-              <h3 className={styles.articleTitle}>{item.title}</h3> 
-              {/* shorten the title if there is something that is too long, display on hover or smth */}
+              <div className={styles.articleTagWrapper}>
+                {item.categories[0] !== "" && item.categories.map((category, index) => (
+                  <span key={index} className={styles.categoryTag} data-category={category._}>{category._}</span>
+                ))}
+              </div>
+              {item.link.endsWith(".jpg") || item.link.endsWith(".png") ||   item.link.endsWith(".jpeg")? (
+                <div className={styles.articleImageWrapper}>
+                  <Image
+                  className={styles.articleImage}
+                    src={item.link}
+                    alt={item.title}
+                    width={200}
+                    height={150}
+                  />
+                </div>
+              ) : null}
+              <h3 className={styles.articleTitle}>{item.title.length > 150 ? item.title.substring(0, 150) + "..." : item.title}</h3>
               <p className={styles.articleSnippet}>{item.contentSnippet}</p>
               <div className={styles.articleBottomRow}>
                 <h5 className={styles.articleAuthor}>{item.author}</h5>

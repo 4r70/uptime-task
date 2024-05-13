@@ -11,7 +11,6 @@
 .main {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   align-items: center;
   padding: 6rem;
   min-height: 100vh;
@@ -27,7 +26,7 @@
   width: 100%;
   padding-inline: 10%;
   min-height: 5rem;
-  background-color: #EDF4FF;
+  background-color: rgba(237, 244, 255, 0.8);
   box-shadow: 0 1.5rem 2rem rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(1rem);
   z-index: 9999;
@@ -45,6 +44,7 @@
   font-size: 1.25rem;
   font-size: clamp(1.25rem, 1.1rem + 0.75vw, 2rem);
   font-weight: 800;
+  margin-right: 2rem;
 }
 
 .feedsButton {
@@ -96,8 +96,7 @@
   flex-direction: column;
   padding: 1rem;
   border-radius: 1rem;
-  background-color: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(1rem);
+  background-color: white;
   box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.1);
   transition: all .3s ease-in-out;
 }
@@ -105,6 +104,77 @@
 .article:hover {
   box-shadow: 0 1rem 4rem #279AF1;
   scale: 1.01;
+}
+
+.articleTagWrapper {
+  display: flex;
+  gap: .5rem;
+  margin-bottom: .5rem;
+  width: 100%;
+  overflow-x: auto;
+}
+
+.categoryTag {
+  padding: .5rem 1rem;
+  border-radius: 1rem;
+  font-size: .75rem;
+  font-size: clamp(.75rem, 0.7rem + 0.25vw, 1rem);
+  font-weight: 500;
+  text-wrap: nowrap;
+  background-color: lightgray;
+}
+
+.categoryTag[data-category="Business"], .categoryTag[data-category="Business Technology"], .categoryTag[data-category="Enterprise Tech"], .categoryTag[data-category="Operations Management"] {
+  background-color: #E3B23C;
+}
+
+.categoryTag[data-category="Management"], .categoryTag[data-category="Learning"], .categoryTag[data-category="Productivity"] {
+  background-color: #E84855;
+  color: white;
+}
+
+.categoryTag[data-category="Google"] {
+  background-color: #488B49;
+  color: white;
+}
+
+.categoryTag[data-category="Technology"], .categoryTag[data-category="Software"], .categoryTag[data-category="Software Development"], .categoryTag[data-category="Engineering"], .categoryTag[data-category="Computer Science"] {
+  background-color: #279AF1;
+}
+
+.categoryTag[data-category="Microsoft"], .categoryTag[data-category="Microsoft Azure"] {
+  background-color: #DAB6FC;
+}
+
+.categoryTag[data-category="ChatGPT"] {
+  background-color: #72A276;
+  color: #000;
+}
+
+.categoryTag[data-category="Microservices"], .categoryTag[data-category="Databases"], .categoryTag[data-category="DNS"] {
+  background-color: #003554;
+  color: white;
+}
+
+.categoryTag[data-category="Artificial Intelligence"], .categoryTag[data-category="Machine Learning"] {
+  background-color: #064789;
+  color: white;
+}
+
+.categoryTag[data-category="DevOps"] {
+  background-color: #679436;
+}
+
+.categoryTag[data-category="Infrastructure as Code"], .categoryTag[data-category="Scalability"], .categoryTag[data-category="Kubernetes"] {
+  background-color: #ED6A5A;
+}
+
+.articleImage {
+  /* WILL break or be wonky if image is in the first article or it has a weird aspect ratio */
+  aspect-ratio: 16/9;   
+  object-fit: contain;
+  width: 100%;
+  height: auto;
 }
 
 .articleTitle {
