@@ -42,7 +42,6 @@ export default function Home({ data, error }) {
 
   const [filterOpen, setFilterOpen] = useState(false);
 
-
   const handleFilterChange = (event) => {
     const category = event.target.value;
     if (event.target.checked) {
@@ -63,8 +62,16 @@ export default function Home({ data, error }) {
 
   const [selectedCategories, setSelectedCategories] = useState(categories);
 
-  const firstRowCategories = categories.slice(0, Math.ceil(categories.length / 2));
-  const secondRowCategories = categories.slice(Math.ceil(categories.length / 2));
+  const handleSelectAll = () => {
+    if (selectedCategories.length < categories.length) {
+      setSelectedCategories(categories);
+    } else {
+      setSelectedCategories([]);
+    }
+  }
+
+  const firstRowCategories = categories.slice(0, Math.floor(categories.length / 2));
+  const secondRowCategories = categories.slice(Math.floor(categories.length / 2));
 
   return (
     <>
@@ -77,11 +84,25 @@ export default function Home({ data, error }) {
       <div className={styles.bg}></div>
       <Header />
       <main className={styles.main}>
-        <div className={styles.headingRow}><h2 className={styles.title}>Your feed</h2><button onClick={() => setFilterOpen(true)} className={styles.filterButton}><Image className={styles.filterIcon} src={"/filter.svg"} width={26} height={26} />Filter</button></div>
+        <div className={styles.headingRow}>
+          <h2 className={styles.title}>Your feed</h2>
+          <button onClick={() => setFilterOpen(true)} className={styles.filterButton}>
+            <Image className={styles.filterIcon} src={"/filter.svg"} width={26} height={26} />
+            Filter
+          </button>
+        </div>
         <Modal isOpen={filterOpen} onClose={() => setFilterOpen(false)}>
-          <h3 className={styles.filterModalHeading}>Filters</h3>
+          <h3 className={styles.filterModalHeading}>Filter</h3>
           <div className={styles.filterColumnsRow}>
             <div className={styles.filterColumn}>
+              <div className={styles.filterRow}>
+                <input className={styles.filterCheckbox}
+                  type="checkbox"
+                  checked={selectedCategories.length === categories.length}
+                  onChange={handleSelectAll }
+                />
+                <span className={styles.filterTag}>Select all</span>
+              </div>
               {firstRowCategories.map((category, index) => (
                 <div className={styles.filterRow} key={index}>
                   <input className={styles.filterCheckbox}
