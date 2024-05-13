@@ -47,7 +47,7 @@ export default function Home({ data, error }) {
       </Head>
       <div className={styles.bg}></div>
       <header className={`${styles.header} ${montserrat.className}`}>
-        <h1>Lola v5</h1> <button>Your feeds</button>
+        <h1>Lola v5</h1> <button className={styles.feedsButton}>Your feeds</button>
       </header>
       <main className={`${styles.main} ${montserrat.className}`}>
         <div className={styles.headingRow}><h2 className={styles.title}>Your feed</h2><button className={styles.filterButton}>Filter</button></div>
