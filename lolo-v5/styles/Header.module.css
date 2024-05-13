@@ -1,0 +1,25 @@
+.header {
+    position: fixed;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding-inline: 10%;
+    min-height: 5rem;
+    background-color: rgba(237, 244, 255, 0.8);
+    box-shadow: 0 1.5rem 2rem rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(1rem);
+    z-index: 9999;
+  }
+  
+  .feedsButton {
+    all: unset;
+    font-size: 1.25rem;
+    font-size: clamp(1.25rem, 1.2rem + 0.25vw, 1.5rem);
+    cursor: pointer;
+    transition: all .3s ease-in-out;
+  }
+  
+  .feedsButton:hover {
+    color: #279AF1;
+  }
