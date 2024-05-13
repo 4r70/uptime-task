@@ -1,7 +1,5 @@
 .bg {
-  background-color: white;
-  background-image: url("../../public/bg.svg");
-  filter: blur(100rem);
+  background-color: #EDF4FF;
   position: fixed;
   z-index: -1;
   left: 0;
@@ -29,7 +27,7 @@
   width: 100%;
   padding-inline: 10%;
   min-height: 5rem;
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: #EDF4FF;
   box-shadow: 0 1.5rem 2rem rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(1rem);
   z-index: 9999;
@@ -54,6 +52,11 @@
   font-size: 1.25rem;
   font-size: clamp(1.25rem, 1.2rem + 0.25vw, 1.5rem);
   cursor: pointer;
+  transition: all .3s ease-in-out;
+}
+
+.feedsButton:hover {
+  color: #279AF1;
 }
 
 .filterButton {
@@ -73,7 +76,7 @@
 }
 
 .filterButton:hover {
-  box-shadow: 0 1rem 1.5rem #FFBE0B;
+  box-shadow: 0 1rem 4rem #279AF1;
   scale: 1.01;
 }
 
@@ -100,7 +103,7 @@
 }
 
 .article:hover {
-  box-shadow: 0 1rem 1.5rem #FFBE0B;
+  box-shadow: 0 1rem 4rem #279AF1;
   scale: 1.01;
 }
 
