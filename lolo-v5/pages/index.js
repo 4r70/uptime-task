@@ -3,41 +3,24 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 
 import Modal from "../components/modal.js";
-import Header from "../components/header";
+import Header, { getServerSideProps } from "../components/header";
+
+export { getServerSideProps };
 
 import styles from "../styles/Home.module.css";
-
-import Parser from 'rss-parser';
-
-
-export async function getServerSideProps() {
-  const parser = new Parser();
-  try {
-    const feed = await parser.parseURL('https://flipboard.com/@raimoseero/feed-nii8kd0sz.rss');
-    const data = feed.items;
-
-    return {
-      props: {
-        data,
-      },
-    };
-
-  } catch (error) {
-
-    return {
-      props: {
-        data: {},
-        error: "Error fetching data: " + error,
-      },
-    };
-
-  }
-}
 
 export default function Home({ data, error }) {
   // console.log(data)
   if (error) {
     console.log(error)
+  }
+
+  const [combinedData, setCombinedData] = useState(data);
+  
+  const handleHeaderData = (newData) => {
+    console.log(data)
+    console.log(newData)
+    setCombinedData((prevData) => prevData.concat(newData));
   }
 
   const [filterOpen, setFilterOpen] = useState(false);
@@ -53,8 +36,11 @@ export default function Home({ data, error }) {
 
   let categories = new Set();
 
-  data.forEach(item => {
-    const nonEmptyCategories = item.categories.filter(category => category !== "");
+  console.log(combinedData)
+
+  combinedData.forEach(item => {
+    // console.log(item.categories)
+    const nonEmptyCategories = item.categories ? item.categories.filter(category => category !== "") : [];
     nonEmptyCategories.forEach(category => categories.add(category._));
   });
 
@@ -82,7 +68,7 @@ export default function Home({ data, error }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className={styles.bg}></div>
-      <Header />
+      <Header onHeaderData={handleHeaderData}/>
       <main className={styles.main}>
         <div className={styles.headingRow}>
           <h2 className={styles.title}>Your feed</h2>
@@ -131,8 +117,9 @@ export default function Home({ data, error }) {
           </div>
         </Modal>
         <div className={styles.articlesWrapper}>
-          {data.map((item, index) => (
-            selectedCategories.some((selectedCategory) => item.categories.map((category) => category._).includes(selectedCategory)) || item.categories[0] === "" ?
+          {console.log(combinedData.map((item) => item.categories))}
+          {combinedData.map((item, index) => (
+            selectedCategories.some((selectedCategory) => item.categories.map((category) => category._).includes(selectedCategory)) || item.categories[0] === ""  ?
               <a className={styles.article} key={index} href={"#"}>
                 <div className={styles.articleTagWrapper}>
                   {/* {item.categories[0] !== "" && item.categories.map((category, index) => (

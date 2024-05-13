@@ -266,4 +266,18 @@
   .article:first-child {
     grid-column: 1;
   }
+
+  .filterColumnsRow {
+    flex-direction: column;
+  }
+
+  .filterCheckbox {
+    width: 2rem;
+    flex-shrink: 0;
+  }
+
+  .filterRow {
+    margin-bottom: 1rem;
+ 
+  }
 }

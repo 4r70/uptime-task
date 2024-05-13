@@ -1,25 +1,77 @@
 .header {
-    position: fixed;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    padding-inline: 10%;
-    min-height: 5rem;
-    background-color: rgba(237, 244, 255, 0.8);
-    box-shadow: 0 1.5rem 2rem rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(1rem);
-    z-index: 9999;
-  }
-  
-  .feedsButton {
-    all: unset;
-    font-size: 1.25rem;
-    font-size: clamp(1.25rem, 1.2rem + 0.25vw, 1.5rem);
-    cursor: pointer;
-    transition: all .3s ease-in-out;
-  }
-  
-  .feedsButton:hover {
-    color: #279AF1;
-  }
+  position: fixed;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding-inline: 10%;
+  min-height: 5rem;
+  background-color: rgba(237, 244, 255, 0.8);
+  box-shadow: 0 1.5rem 2rem rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(1rem);
+  z-index: 9999;
+}
+
+.feedsButton {
+  all: unset;
+  font-size: 1.25rem;
+  font-size: clamp(1.25rem, 1.2rem + 0.25vw, 1.5rem);
+  cursor: pointer;
+  transition: all .3s ease-in-out;
+}
+
+.feedsButton:hover {
+  color: #279AF1;
+}
+
+.feedsModalHeading {
+  font-size: 1.5rem;
+  font-size: clamp(1.5rem, 1.4rem + 0.25vw, 2rem);
+  font-weight: 800;
+  margin-bottom: 1rem;
+}
+
+.feedName {
+  font-size: 1.25rem;
+  font-size: clamp(1.25rem, 1.2rem + 0.25vw, 1.5rem);
+}
+
+.feedsModalSubHeading {
+  font-size: 1.25rem;
+  font-size: clamp(1.25rem, 1.2rem + 0.25vw, 1.5rem);
+  margin-block: 2rem 1rem;
+  font-weight: 600;
+}
+
+.feedsInputRow {
+  display: flex;
+  gap: 1rem;
+}
+
+.feedsInput {
+  all: unset;
+  padding: .5rem 1rem;
+  background-color: rgba(237, 244, 255, 0.8);
+  border-radius: 1rem;
+  transition: all .3s ease-in-out;
+  font-size: 1.25rem;
+  font-size: clamp(1.25rem, 1.2rem + 0.25vw, 1.5rem);
+}
+
+.feedsInput:focus {
+  background-color: rgb(206, 224, 252);
+}
+
+.addFeedButton {
+  all: unset;
+  padding: .5rem 2rem;
+  background-color: #279AF1;
+  color: white;
+  border-radius: 1rem;
+  cursor: pointer;
+  transition: all .3s ease-in-out;
+}
+
+.addFeedButton:hover {
+  box-shadow: 0 1rem 2rem #279AF1;
+}
