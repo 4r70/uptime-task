@@ -117,9 +117,11 @@ export default function Home({ data, error }) {
           </div>
         </Modal>
         <div className={styles.articlesWrapper}>
-          {console.log(combinedData.map((item) => item.categories))}
           {combinedData.map((item, index) => (
-            selectedCategories.some((selectedCategory) => item.categories.map((category) => category._).includes(selectedCategory)) || item.categories[0] === ""  ?
+            (!item.categories || 
+              selectedCategories.some((selectedCategory) => 
+              item.categories.map((category) => category._)
+              .includes(selectedCategory)) || item.categories[0] === "")  &&
               <a className={styles.article} key={index} href={"#"}>
                 <div className={styles.articleTagWrapper}>
                   {/* {item.categories[0] !== "" && item.categories.map((category, index) => (
@@ -148,7 +150,7 @@ export default function Home({ data, error }) {
                   <p className={styles.articleDate}>{new Date(item.isoDate).toLocaleDateString("en-GB")}</p>
                 </div>
               </a>
-              : null))}
+              ))}
         </div>
       </main>
     </>

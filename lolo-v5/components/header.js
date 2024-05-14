@@ -7,19 +7,16 @@ import { useEffect, useState } from "react";
 import Parser from 'rss-parser';
 
 export async function getServerSideProps() {
-    const urls = ["https://flipboard.com/@raimoseero/feed-nii8kd0sz.rss"];
+    const url = "https://flipboard.com/@raimoseero/feed-nii8kd0sz.rss";
     const parser = new Parser();
     try {
         const data = [];
-        for (const url of urls) {
             const feed = await parser.parseURL(url);
             data.push(...feed.items)
-        }
-        console.log("URLs:", urls);
         return {
             props: {
                 data,
-                urls,
+                url,
             },
         };
     } catch (error) {
@@ -27,7 +24,7 @@ export async function getServerSideProps() {
             props: {
                 data: {},
                 error: "Error fetching data: " + error,
-                urls: [],
+                url: "",
             },
         };
     }
@@ -36,23 +33,36 @@ export async function getServerSideProps() {
 export default function Header({ onHeaderData }) {
     const [feedsOpen, setFeedsOpen] = useState(false);
     const [feedUrls, setFeedUrls] = useState([]);
+    useEffect(() => {
+        setFeedUrls(JSON.parse(localStorage.getItem("feedUrls")) || []);
+    }, []);
+    if (typeof window !== "undefined") {
+        console.log(JSON.parse(localStorage.getItem("feedUrls")))
+    }
+
     const [inputUrl, setInputUrl] = useState("");
-    const [newData, setNewData] = useState()
+    const [newData, setNewData] = useState([]);
 
     useEffect(() => {
-        const parser = new Parser();
-        const fetchData = async () => {
+        async function fetchData() {
+            if (typeof window !== "undefined" && feedUrls != "") {
+                localStorage.setItem("feedUrls", JSON.stringify(feedUrls));
+            }
             const newDataArray = [];
             for (const url of feedUrls) {
-                const feed = await parser.parseURL("https://cors-anywhere.herokuapp.com/" + url);
-                console.log(feed)
+                const response = await fetch(`/api/rss?url=${encodeURIComponent(url)}`);
+                const feed = await response.json();
+                if (feed.error) {
+                    console.error('Error fetching RSS feed:', feed.error);
+                    break;
+                }
                 newDataArray.push(...feed.items)
             }
             setNewData(newDataArray);
             onHeaderData(newDataArray);
         }
         fetchData();
-    }, [feedUrls]);
+    }, [feedUrls])
 
     return (
         <>
