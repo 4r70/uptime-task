@@ -92,6 +92,7 @@
   height: auto;
   cursor: pointer;
   accent-color: #279AF1;
+  flex-shrink: 0;
 }
 
 .articlesWrapper {
@@ -137,6 +138,7 @@
   font-size: clamp(.75rem, 0.7rem + 0.25vw, 1rem);
   font-weight: 500;
   background-color: lightgray;
+  white-space: wrap;
 }
 
 .categoryTag[data-category="Business"],
@@ -278,6 +280,9 @@
 
   .filterRow {
     margin-bottom: 1rem;
- 
+  }
+
+  .filterButton {
+    padding: .5em 1.5em;
   }
 }

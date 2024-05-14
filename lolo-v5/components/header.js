@@ -52,11 +52,16 @@ export default function Header({ onHeaderData }) {
             for (const url of feedUrls) {
                 const response = await fetch(`/api/rss?url=${encodeURIComponent(url)}`);
                 const feed = await response.json();
+                const fixedFeed = feed.items.map((item) => ({
+                    ...item,
+                    categories: item.categories || [""],
+                }));
+                console.log(fixedFeed)
                 if (feed.error) {
                     console.error('Error fetching RSS feed:', feed.error);
                     break;
                 }
-                newDataArray.push(...feed.items)
+                newDataArray.push(...fixedFeed)
             }
             setNewData(newDataArray);
             onHeaderData(newDataArray);
@@ -77,7 +82,16 @@ export default function Header({ onHeaderData }) {
                 <h4 className={HeaderStyles.feedsModalSubHeading}>Add a feed:</h4>
                 <div className={HeaderStyles.feedsInputRow}>
                     <input className={HeaderStyles.feedsInput} type="text" placeholder="Feed URL" value={inputUrl} onChange={(e) => setInputUrl(e.target.value)} />
-                    <button className={HeaderStyles.addFeedButton} onClick={() => { setFeedUrls([...feedUrls, inputUrl]); setInputUrl(""); }}>Add</button>
+                    <button className={HeaderStyles.addFeedButton} onClick={(e) => {
+                        try {
+                            new URL(inputUrl);
+                            setFeedUrls([...feedUrls, inputUrl]);
+                            setInputUrl("");
+                        } catch (error) {
+                            console.error('Invalid URL:', error);
+                            e.stopPropagation();
+                        }
+                    }}>Add</button>
                 </div>
             </Modal>
         </>

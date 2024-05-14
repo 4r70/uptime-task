@@ -16,11 +16,12 @@ export default function Home({ data, error }) {
   }
 
   const [combinedData, setCombinedData] = useState(data);
-  
+
   const handleHeaderData = (newData) => {
-    console.log(data)
-    console.log(newData)
+    // console.log(data)
+    // console.log(newData)
     setCombinedData((prevData) => prevData.concat(newData));
+    setSelectedCategories([...selectedCategories, ...newData.map((item) => item.categories.map((category) => category._)).flat()])
   }
 
   const [filterOpen, setFilterOpen] = useState(false);
@@ -36,10 +37,7 @@ export default function Home({ data, error }) {
 
   let categories = new Set();
 
-  console.log(combinedData)
-
   combinedData.forEach(item => {
-    // console.log(item.categories)
     const nonEmptyCategories = item.categories ? item.categories.filter(category => category !== "") : [];
     nonEmptyCategories.forEach(category => categories.add(category._));
   });
@@ -59,6 +57,8 @@ export default function Home({ data, error }) {
   const firstRowCategories = categories.slice(0, Math.floor(categories.length / 2));
   const secondRowCategories = categories.slice(Math.floor(categories.length / 2));
 
+  console.log(selectedCategories.length, categories.length)
+
   return (
     <>
       <Head>
@@ -68,7 +68,7 @@ export default function Home({ data, error }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className={styles.bg}></div>
-      <Header onHeaderData={handleHeaderData}/>
+      <Header onHeaderData={handleHeaderData} />
       <main className={styles.main}>
         <div className={styles.headingRow}>
           <h2 className={styles.title}>Your feed</h2>
@@ -85,7 +85,7 @@ export default function Home({ data, error }) {
                 <input className={styles.filterCheckbox}
                   type="checkbox"
                   checked={selectedCategories.length === categories.length}
-                  onChange={handleSelectAll }
+                  onChange={handleSelectAll}
                 />
                 <span className={styles.filterTag}>Select all</span>
               </div>
@@ -118,39 +118,38 @@ export default function Home({ data, error }) {
         </Modal>
         <div className={styles.articlesWrapper}>
           {combinedData.map((item, index) => (
-            (!item.categories || 
-              selectedCategories.some((selectedCategory) => 
+            (selectedCategories.some((selectedCategory) =>
               item.categories.map((category) => category._)
-              .includes(selectedCategory)) || item.categories[0] === "")  &&
-              <a className={styles.article} key={index} href={"#"}>
-                <div className={styles.articleTagWrapper}>
-                  {/* {item.categories[0] !== "" && item.categories.map((category, index) => (
+                .includes(selectedCategory)) || item.categories[0] === "") &&
+            <a className={styles.article} key={index} href={"#"}>
+              <div className={styles.articleTagWrapper}>
+                {/* {item.categories[0] !== "" && item.categories.map((category, index) => (
                     selectedCategories.includes(category._) && // if a category isnt selected then it will not be shown on the article either. less clutter and confusion. OPTIONAL, not in use currently
                     <span key={index} className={styles.categoryTag} data-category={category._}>{category._}</span>
                   ))} */}
-                  {item.categories[0] !== "" && item.categories.map((category, index) => (
-                    <span key={index} className={styles.categoryTag} data-category={category._}>{category._}</span>
-                  ))}
+                {item.categories[0] !== "" && item.categories.map((category, index) => (
+                  <span key={index} className={styles.categoryTag} data-category={category._}>{category._}</span>
+                ))}
+              </div>
+              {item.link.endsWith(".jpg") || item.link.endsWith(".png") || item.link.endsWith(".jpeg") ? (
+                <div className={styles.articleImageWrapper}>
+                  <Image
+                    className={styles.articleImage}
+                    src={item.link}
+                    alt={item.title}
+                    width={200}
+                    height={150}
+                  />
                 </div>
-                {item.link.endsWith(".jpg") || item.link.endsWith(".png") || item.link.endsWith(".jpeg") ? (
-                  <div className={styles.articleImageWrapper}>
-                    <Image
-                      className={styles.articleImage}
-                      src={item.link}
-                      alt={item.title}
-                      width={200}
-                      height={150}
-                    />
-                  </div>
-                ) : null}
-                <h3 className={styles.articleTitle}>{index == 0 ? item.title : item.title.length > 100 ? item.title.substring(0, 100) + "..." : item.title}</h3>
-                <p className={styles.articleSnippet}>{item.contentSnippet}</p>
-                <div className={styles.articleBottomRow}>
-                  <h5 className={styles.articleAuthor}>{item.author}</h5>
-                  <p className={styles.articleDate}>{new Date(item.isoDate).toLocaleDateString("en-GB")}</p>
-                </div>
-              </a>
-              ))}
+              ) : null}
+              <h3 className={styles.articleTitle}>{index == 0 ? item.title : item.title.length > 100 ? item.title.substring(0, 100) + "..." : item.title}</h3>
+              <p className={styles.articleSnippet}>{item.contentSnippet}</p>
+              <div className={styles.articleBottomRow}>
+                <h5 className={styles.articleAuthor}>{item.author}</h5>
+                <p className={styles.articleDate}>{new Date(item.isoDate).toLocaleDateString("en-GB")}</p>
+              </div>
+            </a>
+          ))}
         </div>
       </main>
     </>
