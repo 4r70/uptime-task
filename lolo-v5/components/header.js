@@ -4,17 +4,36 @@ import Modal from "../components/modal.js";
 
 import { useEffect, useState } from "react";
 
-import Parser from 'rss-parser';
+import Parser from "rss-parser";
 
 export async function getServerSideProps() {
     const url = "https://flipboard.com/@raimoseero/feed-nii8kd0sz.rss";
-    const parser = new Parser();
+    const parser = new Parser({
+        customFields: {
+            item: ["media:content", "media"],
+        }
+    });
     try {
         const data = [];
         const feed = await parser.parseURL(url);
         data.push(...feed.items)
+        // const parsedArticles = await Promise.all(data.map(async (item) => {
+        //     const articleResponse = await fetch("https://uptime-mercury-api.azurewebsites.net/webparser", {
+        //         method: 'POST',
+        //         headers: { "Content-type": "application/json" },
+        //         body: JSON.stringify({ "url": item.link })
+        //     });
+
+        //     const articleData = await articleResponse.json();
+        //     return {
+        //         ...item,
+        //         parsedContent: articleData
+        //     };
+        // }));
+        // console.log(parsedArticles)
         return {
             props: {
+                // data: parsedArticles,
                 data,
                 url,
             },
@@ -22,6 +41,7 @@ export async function getServerSideProps() {
     } catch (error) {
         return {
             props: {
+                // data: [],
                 data: {},
                 error: "Error fetching data: " + error,
                 url: "",

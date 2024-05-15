@@ -9,18 +9,20 @@ export { getServerSideProps };
 
 import styles from "../styles/Home.module.css";
 
-export default function Home({ data, error }) {
-  // console.log(data)
+export default function Home({ data, error, test }) {
+  console.log(data)
   if (error) {
     console.log(error)
   }
+
+  // console.log(test)
 
   const [combinedData, setCombinedData] = useState(data);
   const [baseData, setBaseData] = useState(data);
 
   const handleHeaderData = (newData) => {
     console.log(data)
-    console.log(newData)
+    // console.log(newData)
     const updatedCombinedData = [...baseData, ...newData].sort((a, b) => new Date(b.isoDate) - new Date(a.isoDate));
     setCombinedData(updatedCombinedData);
 
@@ -131,32 +133,33 @@ export default function Home({ data, error }) {
               item.categories.map((category) => category._)
                 .includes(selectedCategory)) || item.categories[0] === "") &&
             <a className={styles.article} key={index} href={"#"}>
-              <span className={styles.articleColor} style={{ backgroundColor: item.color, width: ".75rem", height: ".75rem", borderRadius: "50%" }}></span>
-              <div className={styles.articleTagWrapper}>
-                {/* {item.categories[0] !== "" && item.categories.map((category, index) => (
+              {item["media:content"] && (
+                <Image
+                  className={styles.articleImage}
+                  src={item["media:content"]["$"].url}
+                  width={item["media:content"]["$"].width}
+                  height={item["media:content"]["$"].height}
+                />
+              )}
+              <div className={styles.articleContentWrapper}>
+                <span className={styles.articleColor} style={{ backgroundColor: item.color }}></span>
+                <div className={styles.articleTagOuterWrapper}>
+                  <div className={styles.articleTagWrapper}>
+                    {/* {item.categories[0] !== "" && item.categories.map((category, index) => (
                     selectedCategories.includes(category._) && // if a category isnt selected then it will not be shown on the article either. less clutter and confusion. OPTIONAL, not in use currently
                     <span key={index} className={styles.categoryTag} data-category={category._}>{category._}</span>
                   ))} */}
-                {item.categories[0] !== "" && item.categories.map((category, index) => (
-                  <span key={index} className={styles.categoryTag} data-category={category._}>{category._}</span>
-                ))}
-              </div>
-              {item.link.endsWith(".jpg") || item.link.endsWith(".png") || item.link.endsWith(".jpeg") ? (
-                <div className={styles.articleImageWrapper}>
-                  <Image
-                    className={styles.articleImage}
-                    src={item.link}
-                    alt={item.title}
-                    width={200}
-                    height={150}
-                  />
+                    {item.categories[0] !== "" && item.categories.map((category, index) => (
+                      <span key={index} className={styles.categoryTag} data-category={category._}>{category._}</span>
+                    ))}
+                  </div>
                 </div>
-              ) : null}
-              <h3 className={styles.articleTitle}>{index == 0 ? item.title : item.title.length > 100 ? item.title.substring(0, 100) + "..." : item.title}</h3>
-              <p className={styles.articleSnippet}>{item.contentSnippet}</p>
-              <div className={styles.articleBottomRow}>
-                <h5 className={styles.articleAuthor}>{item.author}</h5>
-                <p className={styles.articleDate}>{new Date(item.isoDate).toLocaleDateString("en-GB")}</p>
+                <h3 className={styles.articleTitle}>{index == 0 ? item.title : item.title.length > 100 ? item.title.substring(0, 100) + "..." : item.title}</h3>
+                <p className={styles.articleSnippet}>{item.contentSnippet}</p>
+                <div className={styles.articleBottomRow}>
+                  <h5 className={styles.articleAuthor}>{item.author}</h5>
+                  <p className={styles.articleDate}>{new Date(item.isoDate).toLocaleDateString("en-GB")}</p>
+                </div>
               </div>
             </a>
           ))}

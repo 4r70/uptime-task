@@ -4,8 +4,7 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: 'http',
-        hostname: 'um-cdn.flipboard.com'
+        hostname: '**'
       },
     ]
   }

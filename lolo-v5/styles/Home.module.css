@@ -102,6 +102,7 @@
 }
 
 .article:first-child {
+  flex-direction: row;
   grid-column: span 2;
   grid-row: 1;
 }
@@ -109,7 +110,6 @@
 .article {
   display: flex;
   flex-direction: column;
-  padding: 1rem;
   border-radius: 1rem;
   background-color: white;
   box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.1);
@@ -121,16 +121,50 @@
   scale: 1.01;
 }
 
-.articleColor {
+.articleContentWrapper {
+  padding: 1rem;
+}
 
+.articleColor {
+  width: .75rem;
+  height: .75rem;
+  border-radius: 50%;
+}
+
+.articleImage {
+  object-fit: cover;
+  width: 100%;
+  height: 12rem;
+  border-radius: 1rem 1rem 0 0;
+  overflow: hidden;
+}
+
+.article:first-child > .articleImage {
+  border-radius: 1rem 0 0 1rem;;
+  width: 50%;
+  height: auto;
+}
+
+.article:first-child > .articleContentWrapper {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  align-self: center;
+  justify-content: space-between;
+}
+
+.articleTagOuterWrapper {
+  /* position: absolute; */
+  width: auto;
 }
 
 .articleTagWrapper {
+  position: relative;
   display: flex;
   gap: .5rem;
   margin-bottom: .5rem;
   overflow-x: auto;
-  white-space: nowrap;
+  white-space: wrap;
   flex-wrap: wrap;
   /* width: 15rem; */
 }
@@ -203,14 +237,6 @@
 .categoryTag[data-category="Scalability"],
 .categoryTag[data-category="Kubernetes"] {
   background-color: #ED6A5A;
-}
-
-.articleImage {
-  /* WILL break or be wonky if image is in the first article or it has a weird aspect ratio */
-  aspect-ratio: 16/9;
-  object-fit: contain;
-  width: 100%;
-  height: auto;
 }
 
 .articleTitle {

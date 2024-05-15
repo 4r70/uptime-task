@@ -4,7 +4,6 @@ const parser = new Parser();
 
 export default async function handler(req, res) {
     const { url } = req.query;
-
     try {
         const feed = await parser.parseURL(url);
         res.status(200).json({ items: feed.items });
