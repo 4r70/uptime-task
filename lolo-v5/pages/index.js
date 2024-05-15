@@ -20,7 +20,7 @@ export default function Home({ data, error }) {
   const handleHeaderData = (newData) => {
     // console.log(data)
     // console.log(newData)
-    setCombinedData((prevData) => prevData.concat(newData));
+    setCombinedData((prevData) => prevData.concat(newData).sort((a, b) => new Date(b.isoDate) - new Date(a.isoDate)));
     setSelectedCategories([...selectedCategories, ...newData.map((item) => item.categories.map((category) => category._)).flat()])
   }
 
