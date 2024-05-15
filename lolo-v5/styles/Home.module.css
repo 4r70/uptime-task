@@ -140,7 +140,7 @@
 }
 
 .article:first-child > .articleImage {
-  border-radius: 1rem 0 0 1rem;;
+  border-radius: 1rem 0 0 1rem;
   width: 50%;
   height: auto;
 }
@@ -315,5 +315,16 @@
 
   .filterButton {
     padding: .5em 1.5em;
+  }
+  .article:first-child {
+    flex-direction: column;
+  }
+  .article:first-child > .articleImage {
+    border-radius: 1rem 1rem 0 0;
+    width: 100%;
+    height: 12rem;
+  }
+  .article:first-child > .articleContentWrapper {
+    width: 100%;
   }
 }
