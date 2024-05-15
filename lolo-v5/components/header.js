@@ -33,33 +33,32 @@ export async function getServerSideProps() {
 export default function Header({ onHeaderData }) {
     const [feedsOpen, setFeedsOpen] = useState(false);
     const [feedUrls, setFeedUrls] = useState([]);
+    const [inputUrl, setInputUrl] = useState("");
+
     useEffect(() => {
         setFeedUrls(JSON.parse(localStorage.getItem("feedUrls")) || []);
     }, []);
 
-    const [inputUrl, setInputUrl] = useState("");
-    const [inputColor, setInputColor] = useState("#000000");
-
     useEffect(() => {
         async function fetchData() {
-            if (typeof window !== "undefined" && feedUrls != "") {
+            if (typeof window !== "undefined" && feedUrls.length > 0) {
                 localStorage.setItem("feedUrls", JSON.stringify(feedUrls));
             }
             const newDataArray = [];
             for (const { url, color } of feedUrls) {
                 const response = await fetch(`/api/rss?url=${encodeURIComponent(url)}`);
                 const feed = await response.json();
-                console.log(feed)
-                const fixedFeed = feed.items.map((item) => ({
-                    ...item,
-                    categories: item.categories || [""],
-                    color: color || "",
-                }));
-                console.log(fixedFeed)
+                // console.log(feed)
                 if (feed.error) {
                     console.error('Error fetching RSS feed:', feed.error);
                     break;
                 }
+                const fixedFeed = feed.items.map((item) => ({
+                    ...item,
+                    categories: item.categories || [""],
+                    color: color,
+                }));
+                // console.log(fixedFeed)
                 newDataArray.push(...fixedFeed)
             }
             onHeaderData(newDataArray);
@@ -74,8 +73,8 @@ export default function Header({ onHeaderData }) {
             </header>
             <Modal isOpen={feedsOpen} onClose={() => setFeedsOpen(false)}>
                 <h3 className={HeaderStyles.feedsModalHeading}>Your feeds</h3>
-                {feedUrls != "" ? feedUrls.map(({ url, color }, index) => (
-                    <div className={HeaderStyles.feedRow}>
+                {feedUrls.length > 0 ? feedUrls.map(({ url, color }, index) => (
+                    <div key={index} className={HeaderStyles.feedRow}>
                         <input
                             type="color"
                             className={HeaderStyles.feedColorPicker}
@@ -101,8 +100,7 @@ export default function Header({ onHeaderData }) {
                             >Edit</button> {/* implement better editing later */}
                             <button className={HeaderStyles.feedRemoveButton}
                                 onClick={() => {
-                                    const updatedFeedUrls = [...feedUrls];
-                                    updatedFeedUrls.splice(index, 1);
+                                    const updatedFeedUrls = feedUrls.filter((_, i) => i !== index);
                                     setFeedUrls(updatedFeedUrls);
                                     localStorage.setItem("feedUrls", JSON.stringify(updatedFeedUrls));
                                 }}
@@ -121,11 +119,10 @@ export default function Header({ onHeaderData }) {
                         onClick={(e) => {
                             try {
                                 new URL(inputUrl);
-                                setFeedUrls((prevFeedUrls) => [
-                                    ...prevFeedUrls,
-                                    { url: inputUrl, color: "" }, 
-                                ]);
+                                const updatedFeedUrls = [...feedUrls, { url: inputUrl, color: "#000" }];
+                                setFeedUrls(updatedFeedUrls);
                                 setInputUrl("");
+                                localStorage.setItem("feedUrls", JSON.stringify(updatedFeedUrls));
                             } catch (error) {
                                 console.error('Invalid URL:', error);
                                 e.stopPropagation();

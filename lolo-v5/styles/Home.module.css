@@ -121,6 +121,10 @@
   scale: 1.01;
 }
 
+.articleColor {
+
+}
+
 .articleTagWrapper {
   display: flex;
   gap: .5rem;
