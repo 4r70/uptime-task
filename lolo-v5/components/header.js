@@ -11,8 +11,8 @@ export async function getServerSideProps() {
     const parser = new Parser();
     try {
         const data = [];
-            const feed = await parser.parseURL(url);
-            data.push(...feed.items)
+        const feed = await parser.parseURL(url);
+        data.push(...feed.items)
         return {
             props: {
                 data,
@@ -36,12 +36,9 @@ export default function Header({ onHeaderData }) {
     useEffect(() => {
         setFeedUrls(JSON.parse(localStorage.getItem("feedUrls")) || []);
     }, []);
-    if (typeof window !== "undefined") {
-        console.log(JSON.parse(localStorage.getItem("feedUrls")))
-    }
 
     const [inputUrl, setInputUrl] = useState("");
-    const [newData, setNewData] = useState([]);
+    const [inputColor, setInputColor] = useState("#000000");
 
     useEffect(() => {
         async function fetchData() {
@@ -49,12 +46,14 @@ export default function Header({ onHeaderData }) {
                 localStorage.setItem("feedUrls", JSON.stringify(feedUrls));
             }
             const newDataArray = [];
-            for (const url of feedUrls) {
+            for (const { url, color } of feedUrls) {
                 const response = await fetch(`/api/rss?url=${encodeURIComponent(url)}`);
                 const feed = await response.json();
+                console.log(feed)
                 const fixedFeed = feed.items.map((item) => ({
                     ...item,
                     categories: item.categories || [""],
+                    color: color || "",
                 }));
                 console.log(fixedFeed)
                 if (feed.error) {
@@ -63,7 +62,6 @@ export default function Header({ onHeaderData }) {
                 }
                 newDataArray.push(...fixedFeed)
             }
-            setNewData(newDataArray);
             onHeaderData(newDataArray);
         }
         fetchData();
@@ -76,22 +74,63 @@ export default function Header({ onHeaderData }) {
             </header>
             <Modal isOpen={feedsOpen} onClose={() => setFeedsOpen(false)}>
                 <h3 className={HeaderStyles.feedsModalHeading}>Your feeds</h3>
-                {feedUrls != "" ? feedUrls.map((url, index) => (
-                    <span className={HeaderStyles.feedName}>{url}</span>
+                {feedUrls != "" ? feedUrls.map(({ url, color }, index) => (
+                    <div className={HeaderStyles.feedRow}>
+                        <input
+                            type="color"
+                            className={HeaderStyles.feedColorPicker}
+                            value={color}
+                            onChange={(e) => {
+                                const newColor = e.target.value;
+                                const updatedFeedUrls = [...feedUrls];
+                                updatedFeedUrls[index].color = newColor;
+                                setFeedUrls(updatedFeedUrls);
+                                localStorage.setItem("feedUrls", JSON.stringify(updatedFeedUrls));
+                            }}
+                        /> {/* style this later */}
+                        <span className={HeaderStyles.feedName}>{url}</span>
+                        <div className={HeaderStyles.feedEditButtons}>
+                            <button className={HeaderStyles.feedEditButton}
+                                onClick={() => {
+                                    setInputUrl(url);
+                                    const updatedFeedUrls = [...feedUrls];
+                                    updatedFeedUrls.splice(index, 1);
+                                    setFeedUrls(updatedFeedUrls);
+                                    localStorage.setItem("feedUrls", JSON.stringify(updatedFeedUrls));
+                                }}
+                            >Edit</button> {/* implement better editing later */}
+                            <button className={HeaderStyles.feedRemoveButton}
+                                onClick={() => {
+                                    const updatedFeedUrls = [...feedUrls];
+                                    updatedFeedUrls.splice(index, 1);
+                                    setFeedUrls(updatedFeedUrls);
+                                    localStorage.setItem("feedUrls", JSON.stringify(updatedFeedUrls));
+                                }}
+                            >Remove</button>
+                        </div>
+                    </div>
                 )) : <span>No custom feeds added</span>}
                 <h4 className={HeaderStyles.feedsModalSubHeading}>Add a feed:</h4>
                 <div className={HeaderStyles.feedsInputRow}>
-                    <input className={HeaderStyles.feedsInput} type="text" placeholder="Feed URL" value={inputUrl} onChange={(e) => setInputUrl(e.target.value)} />
-                    <button className={HeaderStyles.addFeedButton} onClick={(e) => {
-                        try {
-                            new URL(inputUrl);
-                            setFeedUrls([...feedUrls, inputUrl]);
-                            setInputUrl("");
-                        } catch (error) {
-                            console.error('Invalid URL:', error);
-                            e.stopPropagation();
-                        }
-                    }}>Add</button>
+                    <input className={HeaderStyles.feedsInput}
+                        type="text"
+                        placeholder="Feed URL"
+                        value={inputUrl}
+                        onChange={(e) => setInputUrl(e.target.value)} />
+                    <button className={HeaderStyles.addFeedButton}
+                        onClick={(e) => {
+                            try {
+                                new URL(inputUrl);
+                                setFeedUrls((prevFeedUrls) => [
+                                    ...prevFeedUrls,
+                                    { url: inputUrl, color: "" }, 
+                                ]);
+                                setInputUrl("");
+                            } catch (error) {
+                                console.error('Invalid URL:', error);
+                                e.stopPropagation();
+                            }
+                        }}>Add</button>
                 </div>
             </Modal>
         </>

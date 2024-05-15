@@ -45,6 +45,11 @@ export default function Home({ data, error }) {
   categories = Array.from(categories).sort((a, b) => a.localeCompare(b));
 
   const [selectedCategories, setSelectedCategories] = useState(categories);
+  const [categoriesRow, setCategoriesRow] = useState(categories);
+
+  useEffect(() => {
+    setCategoriesRow(categories);
+  }, [combinedData]);
 
   const handleSelectAll = () => {
     if (selectedCategories.length < categories.length) {
@@ -54,10 +59,10 @@ export default function Home({ data, error }) {
     }
   }
 
-  const firstRowCategories = categories.slice(0, Math.floor(categories.length / 2));
-  const secondRowCategories = categories.slice(Math.floor(categories.length / 2));
+  const firstRowCategories = categoriesRow.slice(0, Math.floor(categoriesRow.length / 2));
+  const secondRowCategories = categoriesRow.slice(Math.floor(categoriesRow.length / 2));
 
-  console.log(selectedCategories.length, categories.length)
+  // console.log(selectedCategories.length, categories.length)
 
   return (
     <>

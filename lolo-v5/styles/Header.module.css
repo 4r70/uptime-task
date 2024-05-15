@@ -31,15 +31,57 @@
   margin-bottom: 1rem;
 }
 
+.feedRow {
+  display: flex;
+  align-items: center;
+  flex-shrink: 1;
+  margin-bottom: 1rem;
+}
+
+.feedColorPicker {
+  border: transparent;
+  width: 2rem;
+  height: 2rem;
+  margin-right: 1rem;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
 .feedName {
-  font-size: 1.25rem;
-  font-size: clamp(1.25rem, 1.2rem + 0.25vw, 1.5rem);
+  font-size: 1rem;
+  font-size: clamp(1rem, 1rem + 0.25vw, 1.25rem);
+  word-break: break-all;
+  text-align: center;
+}
+
+.feedEditButtons {
+  display: flex;
+  margin-left: 1rem;
+  text-align: center;
+}
+
+.feedEditButton, .feedRemoveButton {
+  all: unset;
+  background-color: rgb(206, 224, 252);
+  padding: .5em 1em;
+  border-radius: 1rem;
+  cursor: pointer;
+  transition: all .3s ease-in-out;
+}
+
+.feedEditButton:hover, .feedRemoveButton:hover {
+  background-color: #279AF1;
+  color: white;
+}
+
+.feedEditButton {
+  margin-right: 1rem;
 }
 
 .feedsModalSubHeading {
   font-size: 1.25rem;
   font-size: clamp(1.25rem, 1.2rem + 0.25vw, 1.5rem);
-  margin-block: 2rem 1rem;
+  margin-block: 1rem;
   font-weight: 600;
 }
 
@@ -51,11 +93,13 @@
 .feedsInput {
   all: unset;
   padding: .5rem 1rem;
-  background-color: rgba(237, 244, 255, 0.8);
+  background-color: rgb(237, 244, 255);
   border-radius: 1rem;
   transition: all .3s ease-in-out;
   font-size: 1.25rem;
   font-size: clamp(1.25rem, 1.2rem + 0.25vw, 1.5rem);
+  width: clamp(5rem, 30rem, 100%);
+  box-sizing: border-box;
 }
 
 .feedsInput:focus {
@@ -74,4 +118,36 @@
 
 .addFeedButton:hover {
   box-shadow: 0 1rem 2rem #279AF1;
+}
+
+@media (max-width: 45rem) {
+  .feedEditButtons {
+    flex-direction: column;
+  }
+  .feedEditButton {
+    margin-right: 0;
+    margin-bottom: .5rem;
+  }
+}
+
+@media (max-width: 30rem) {
+  .feedsInputRow {
+    flex-direction: column;
+  }
+  .addFeedButton {
+    align-self: center;
+    text-align: center;
+  }
+  .feedRow {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+  }
+  .feedColorPicker {
+    order: 1;
+    margin-right: 0;
+  }
+  .feedEditButtons {
+    order: 2;
+  }
 }

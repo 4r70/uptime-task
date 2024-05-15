@@ -71,7 +71,7 @@
 .filterColumn {
   display: flex;
   flex-direction: column;
-  overflow-y: scroll;
+  overflow-y: auto;
   font-size: 1rem;
   font-size: clamp(1rem, 0.9rem + 0.25vw, 1.25rem);
   font-weight: 400;
@@ -276,6 +276,7 @@
   .filterCheckbox {
     width: 2rem;
     flex-shrink: 0;
+    flex-grow: 0;
   }
 
   .filterRow {
