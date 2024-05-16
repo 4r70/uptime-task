@@ -66,10 +66,13 @@
 
 .filterColumnsRow {
   display: flex;
+  /* flex-wrap: wrap; */
 }
 
 .filterColumn {
   display: flex;
+  flex: 1 1 auto;
+  max-width: calc(50% - 1rem);
   flex-direction: column;
   overflow-y: auto;
   font-size: 1rem;
@@ -107,13 +110,54 @@
   grid-row: 1;
 }
 
+.modalArticle {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.modalArticleImage {
+  object-fit: cover;
+  width: 100%;
+  height: auto;
+  max-height: 30rem;
+}
+
+.modalArticleContentWrapper {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+}
+
+.modalArticleTitle {
+  font-size: 1.5rem;
+  font-size: clamp(1.5rem, 1.4rem + 0.25vw, 2rem);
+  font-weight: 800;
+}
+
+.modalArticleAuthor {
+  font-size: 1rem;
+  font-size: clamp(1rem, 0.9rem + 0.25vw, 1.25rem);
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+
+.modalArticleContent {
+  font-size: 1rem;
+  font-size: clamp(1rem, 0.9rem + 0.25vw, 1.25rem);
+
+}
+
 .article {
+  all: unset;
+  position: relative;
   display: flex;
   flex-direction: column;
   border-radius: 1rem;
   background-color: white;
   box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.1);
   transition: all .3s ease-in-out;
+  cursor: pointer;
 }
 
 .article:hover {
@@ -125,12 +169,6 @@
   padding: 1rem;
 }
 
-.articleColor {
-  width: .75rem;
-  height: .75rem;
-  border-radius: 50%;
-}
-
 .articleImage {
   object-fit: cover;
   width: 100%;
@@ -139,13 +177,13 @@
   overflow: hidden;
 }
 
-.article:first-child > .articleImage {
+.article:first-child>.articleImage {
   border-radius: 1rem 0 0 1rem;
   width: 50%;
   height: auto;
 }
 
-.article:first-child > .articleContentWrapper {
+.article:first-child>.articleContentWrapper {
   display: flex;
   flex-direction: column;
   width: 50%;
@@ -154,19 +192,30 @@
 }
 
 .articleTagOuterWrapper {
-  /* position: absolute; */
-  width: auto;
+  position: absolute;
+  width: 100%;
+  padding: 1rem;
+  max-height: 12rem;
+  overflow: auto;
+  white-space: nowrap;
+}
+
+.articleTagOuterWrapper:first-child {
+  position: relative;
+  padding-bottom: 0;
+}
+
+.article:first-child>.articleTagOuterWrapper {
+  width: 50%;
+  max-height: 100%;
 }
 
 .articleTagWrapper {
-  position: relative;
   display: flex;
   gap: .5rem;
   margin-bottom: .5rem;
-  overflow-x: auto;
-  white-space: wrap;
+  overflow: auto;
   flex-wrap: wrap;
-  /* width: 15rem; */
 }
 
 .categoryTag {
@@ -253,6 +302,21 @@
 .articleBottomRow {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+}
+
+.articleColorAuthorWrapper {
+  display: flex;
+  align-items: center;
+}
+
+.articleColor {
+  display: inline-block;
+  width: .75rem;
+  height: .75rem;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-right: .5rem;
 }
 
 .articleAuthor,
@@ -303,6 +367,14 @@
     flex-direction: column;
   }
 
+  .filterColumn {
+    max-width: 100%;
+  }
+
+  .filterColumn:first-child {
+    margin-right: 0;
+  }
+
   .filterCheckbox {
     width: 2rem;
     flex-shrink: 0;
@@ -316,15 +388,23 @@
   .filterButton {
     padding: .5em 1.5em;
   }
+
   .article:first-child {
     flex-direction: column;
   }
-  .article:first-child > .articleImage {
+
+  .article:first-child>.articleImage {
     border-radius: 1rem 1rem 0 0;
     width: 100%;
     height: 12rem;
   }
-  .article:first-child > .articleContentWrapper {
+
+  .article:first-child>.articleContentWrapper {
     width: 100%;
+  }
+
+  .article:first-child>.articleTagOuterWrapper {
+    width: 100%;
+    max-height: 12rem;
   }
 }

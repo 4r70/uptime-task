@@ -9,8 +9,10 @@ export { getServerSideProps };
 
 import styles from "../styles/Home.module.css";
 
+import { Interweave, Markup } from 'interweave'; // safer than dangerouslySetInnerHTML
+
 export default function Home({ data, error, test }) {
-  console.log(data)
+  // console.log(data)
   if (error) {
     console.log(error)
   }
@@ -19,18 +21,20 @@ export default function Home({ data, error, test }) {
 
   const [combinedData, setCombinedData] = useState(data);
   const [baseData, setBaseData] = useState(data);
+  const [articleOpen, setArticleOpen] = useState(false);
+  const [filterOpen, setFilterOpen] = useState(false);
+  const [selectedArticle, setSelectedArticle] = useState(null);
+  const [newArticleData, setNewArticleData] = useState({});
 
   const handleHeaderData = (newData) => {
-    console.log(data)
+    // console.log(data)
     // console.log(newData)
     const updatedCombinedData = [...baseData, ...newData].sort((a, b) => new Date(b.isoDate) - new Date(a.isoDate));
     setCombinedData(updatedCombinedData);
 
-    const newCategories = newData.map((item) => item.categories.map((category) => category._)).flat();
-    setSelectedCategories((prevCategories) => Array.from(new Set([...prevCategories, ...newCategories])));
+    const newCategories = newData.map((item) => item.categories.map((category) => category._)).flat(); // Remove empty categories
+    setSelectedCategories((prevCategories) => Array.from(new Set([...prevCategories, ...newCategories]))); // Add new categories to selected categories, remove duplicates
   }
-
-  const [filterOpen, setFilterOpen] = useState(false);
 
   const handleFilterChange = (event) => {
     const category = event.target.value;
@@ -44,11 +48,11 @@ export default function Home({ data, error, test }) {
   let categories = new Set();
 
   combinedData.forEach(item => {
-    const nonEmptyCategories = item.categories ? item.categories.filter(category => category !== "") : [];
+    const nonEmptyCategories = item.categories ? item.categories.filter(category => category !== "") : []; // Dont add empty categories
     nonEmptyCategories.forEach(category => categories.add(category._));
   });
 
-  categories = Array.from(categories).sort((a, b) => a.localeCompare(b));
+  categories = Array.from(categories).sort((a, b) => a.localeCompare(b)); // Sort by time
 
   const [selectedCategories, setSelectedCategories] = useState(categories);
   const [categoriesRow, setCategoriesRow] = useState(categories);
@@ -65,10 +69,25 @@ export default function Home({ data, error, test }) {
     }
   }
 
+  // Split categories into two rows for the filter modal
   const firstRowCategories = categoriesRow.slice(0, Math.floor(categoriesRow.length / 2));
   const secondRowCategories = categoriesRow.slice(Math.floor(categoriesRow.length / 2));
 
   // console.log(selectedCategories.length, categories.length)
+
+  const handleArticleClick = async (article) => {
+    // console.log(article)
+    setSelectedArticle(article);
+    setArticleOpen(true);
+    try {
+      // Webparser API
+      const response = await fetch(`/api/parse?url=${encodeURIComponent(article.link)}`)
+      const articleData = await response.json();
+      setNewArticleData({ ...article, ...articleData });
+    } catch (error) {
+      console.error('Error fetching RSS feed:', error);
+    }
+  }
 
   return (
     <>
@@ -132,7 +151,7 @@ export default function Home({ data, error, test }) {
             (selectedCategories.some((selectedCategory) =>
               item.categories.map((category) => category._)
                 .includes(selectedCategory)) || item.categories[0] === "") &&
-            <a className={styles.article} key={index} href={"#"}>
+            <button className={styles.article} key={index} onClick={() => { handleArticleClick(item) }}>
               {item["media:content"] && (
                 <Image
                   className={styles.articleImage}
@@ -141,29 +160,68 @@ export default function Home({ data, error, test }) {
                   height={item["media:content"]["$"].height}
                 />
               )}
-              <div className={styles.articleContentWrapper}>
-                <span className={styles.articleColor} style={{ backgroundColor: item.color }}></span>
-                <div className={styles.articleTagOuterWrapper}>
-                  <div className={styles.articleTagWrapper}>
-                    {/* {item.categories[0] !== "" && item.categories.map((category, index) => (
+              <div className={styles.articleTagOuterWrapper}>
+                <div className={styles.articleTagWrapper}>
+                  {/* {item.categories[0] !== "" && item.categories.map((category, index) => (
                     selectedCategories.includes(category._) && // if a category isnt selected then it will not be shown on the article either. less clutter and confusion. OPTIONAL, not in use currently
                     <span key={index} className={styles.categoryTag} data-category={category._}>{category._}</span>
                   ))} */}
-                    {item.categories[0] !== "" && item.categories.map((category, index) => (
-                      <span key={index} className={styles.categoryTag} data-category={category._}>{category._}</span>
-                    ))}
-                  </div>
+                  {item.categories[0] !== "" && item.categories.map((category, index) => (
+                    <span key={index} className={styles.categoryTag} data-category={category._}>{category._}</span>
+                  ))}
                 </div>
+              </div>
+              <div className={styles.articleContentWrapper}>
                 <h3 className={styles.articleTitle}>{index == 0 ? item.title : item.title.length > 100 ? item.title.substring(0, 100) + "..." : item.title}</h3>
                 <p className={styles.articleSnippet}>{item.contentSnippet}</p>
                 <div className={styles.articleBottomRow}>
-                  <h5 className={styles.articleAuthor}>{item.author}</h5>
+                  <div className={styles.articleColorAuthorWrapper}>
+                    {item.color && <span className={styles.articleColor} style={{ backgroundColor: item.color }}></span>}
+                    <h5 className={styles.articleAuthor}>{item.author ? item.author : item.creator}</h5>
+                  </div>
                   <p className={styles.articleDate}>{new Date(item.isoDate).toLocaleDateString("en-GB")}</p>
                 </div>
               </div>
-            </a>
+            </button>
           ))}
         </div>
+        <Modal noPadding isOpen={articleOpen} onClose={() => { setArticleOpen(false); setSelectedArticle({}); setNewArticleData({}) }}>
+          {newArticleData && Object.keys(newArticleData).length > 0 ? ( // Use new data (old data + new data combined) when it has been fetched
+            <div className={styles.modalArticle}>
+              {/* {newArticleData["media:content"] && (
+                <Image
+                  className={styles.modalArticleImage}
+                  src={newArticleData["media:content"]["$"].url}
+                  width={newArticleData["media:content"]["$"].width}
+                  height={newArticleData["media:content"]["$"].height}
+                />
+              )} */}
+              <div className={styles.modalArticleContentWrapper}>
+                <h3 className={styles.modalArticleTitle}>{newArticleData.articleData.title}</h3>
+                <span className={styles.modalArticleAuthor}>{newArticleData.articleData.author ? newArticleData.articleData.author : newArticleData.articleData.creator}</span>
+                <Interweave content={newArticleData.articleData.content} />
+              </div>
+            </div>
+          ) : selectedArticle ? ( // Use existing data at first, user gets some content instantly
+            <div className={styles.modalArticle}>
+              {/* {selectedArticle["media:content"] && (
+                <Image
+                  className={styles.modalArticleImage}
+                  src={selectedArticle["media:content"]["$"].url}
+                  width={selectedArticle["media:content"]["$"].width}
+                  height={selectedArticle["media:content"]["$"].height}
+                />
+              )} */}
+              <div className={styles.modalArticleContentWrapper}>
+                <h3 className={styles.modalArticleTitle}>{selectedArticle.title}</h3>
+                <span className={styles.modalArticleAuthor}>{selectedArticle.author ? selectedArticle.author : selectedArticle.creator}</span>
+                <div className={styles.modalArticleContent}>{selectedArticle.contentSnippet}</div>
+              </div>
+            </div>
+          ) : (
+            <p>Loading...</p>
+          )}
+        </Modal>
       </main>
     </>
   );

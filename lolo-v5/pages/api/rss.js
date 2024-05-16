@@ -1,6 +1,10 @@
 import Parser from 'rss-parser';
 
-const parser = new Parser();
+const parser = new Parser({
+  customFields: {
+      item: ["media:content", "media"],
+  }
+});
 
 export default async function handler(req, res) {
     const { url } = req.query;
