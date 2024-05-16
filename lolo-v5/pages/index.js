@@ -233,8 +233,16 @@ export default function Home({ data, error, test }) {
               )}
               <div className={styles.modalArticleContentWrapper}>
                 <h3 className={styles.modalArticleTitle}>{selectedArticle.title}</h3>
-                <span className={styles.modalArticleAuthor}>{selectedArticle.author ? selectedArticle.author : selectedArticle.creator}</span>
+                <div className={styles.modalArticleAuthorDateWrapper}>
+                  <span className={styles.modalArticleAuthor}>{selectedArticle.author ? selectedArticle.author : selectedArticle.creator}</span>
+                  <span className={styles.modalArticleDate}>
+                    {new Date(selectedArticle.isoDate).toLocaleDateString("en-GB", { day: "2-digit", month: "long", year: "numeric" })}
+                  </span>
+                </div>
                 <div className={styles.modalArticleContent}>{selectedArticle.contentSnippet}</div>
+                <div className={styles.modalArticleLoading}></div>
+                <div className={styles.modalArticleLoading}></div>
+                <div className={styles.modalArticleLoading}></div>
               </div>
             </div>
           ) : (
