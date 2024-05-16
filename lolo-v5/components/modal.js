@@ -6,20 +6,25 @@ export default function Modal({ isOpen, children, onClose, noPadding }) {
     const modalRef = useRef(null);
 
     useEffect(() => {
-        if (!modalOpen) return; function handleClickOutside(event) {
+        if (!modalOpen) return;
+
+        function handleClickOutside(event) {
             if (modalRef.current && !modalRef.current.contains(event.target)) {
                 setModalOpen(false);
                 onClose();
-            };
+            }
         }
+
         function handleKeyPress(event) {
             if (event.key === "Escape") {
                 setModalOpen(false);
                 onClose();
             }
         }
+
         window.addEventListener("mousedown", handleClickOutside);
         window.addEventListener("keydown", handleKeyPress);
+
         return () => {
             window.removeEventListener("mousedown", handleClickOutside);
             window.removeEventListener("keydown", handleKeyPress);
@@ -32,7 +37,7 @@ export default function Modal({ isOpen, children, onClose, noPadding }) {
         modalOpen && (
             <div className={ModalStyles.modalBg}>
                 <div className={ModalStyles.modal}>
-                    <div ref={modalRef} className={ModalStyles.modalBox} style={noPadding && {padding: "0"}}>
+                    <div ref={modalRef} className={ModalStyles.modalBox} style={noPadding && { padding: "0" }}>
                         {children}
                     </div>
                 </div>

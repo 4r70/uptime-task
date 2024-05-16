@@ -9,8 +9,6 @@ export { getServerSideProps };
 
 import styles from "../styles/Home.module.css";
 
-import { Interweave, Markup } from 'interweave'; // safer than dangerouslySetInnerHTML
-
 export default function Home({ data, error, test }) {
   // console.log(data)
   if (error) {
@@ -172,14 +170,17 @@ export default function Home({ data, error, test }) {
                 </div>
               </div>
               <div className={styles.articleContentWrapper}>
-                <h3 className={styles.articleTitle}>{index == 0 ? item.title : item.title.length > 100 ? item.title.substring(0, 100) + "..." : item.title}</h3>
+                <h3 className={styles.articleTitle}>
+                  {index == 0 ? item.title : item.title.length > 100 ?
+                    item.title.substring(0, 100) + "..." : item.title}
+                </h3>
                 <p className={styles.articleSnippet}>{item.contentSnippet}</p>
                 <div className={styles.articleBottomRow}>
                   <div className={styles.articleColorAuthorWrapper}>
                     {item.color && <span className={styles.articleColor} style={{ backgroundColor: item.color }}></span>}
                     <h5 className={styles.articleAuthor}>{item.author ? item.author : item.creator}</h5>
                   </div>
-                  <p className={styles.articleDate}>{new Date(item.isoDate).toLocaleDateString("en-GB")}</p>
+                  <p className={styles.articleDate}>{new Date(item.isoDate).toLocaleDateString("en-GB", { day: "2-digit", month: "long", year: "numeric" })}</p>
                 </div>
               </div>
             </button>
@@ -188,30 +189,48 @@ export default function Home({ data, error, test }) {
         <Modal noPadding isOpen={articleOpen} onClose={() => { setArticleOpen(false); setSelectedArticle({}); setNewArticleData({}) }}>
           {newArticleData && Object.keys(newArticleData).length > 0 ? ( // Use new data (old data + new data combined) when it has been fetched
             <div className={styles.modalArticle}>
-              {/* {newArticleData["media:content"] && (
+              {console.log(newArticleData)}
+              {newArticleData["media:content"] && (
                 <Image
                   className={styles.modalArticleImage}
                   src={newArticleData["media:content"]["$"].url}
                   width={newArticleData["media:content"]["$"].width}
                   height={newArticleData["media:content"]["$"].height}
                 />
-              )} */}
+              )}
               <div className={styles.modalArticleContentWrapper}>
-                <h3 className={styles.modalArticleTitle}>{newArticleData.articleData.title}</h3>
-                <span className={styles.modalArticleAuthor}>{newArticleData.articleData.author ? newArticleData.articleData.author : newArticleData.articleData.creator}</span>
-                <Interweave content={newArticleData.articleData.content} />
+                <h3 className={styles.modalArticleTitle}>{newArticleData.articleData.title ? newArticleData.articleData.title : newArticleData.title}</h3>
+                <div className={styles.modalArticleAuthorDateWrapper}>
+                  <span className={styles.modalArticleAuthor}>
+                    {newArticleData.articleData.author ?
+                      newArticleData.articleData.author : newArticleData.articleData.creator ?
+                        newArticleData.articleData.creator : newArticleData.author ?
+                          newArticleData.author : newArticleData.creator
+                    }
+                  </span>
+                  <span className={styles.modalArticleDate}>
+                    {newArticleData.articleData.date_published ?
+                      new Date(newArticleData.articleData.date_published).toLocaleDateString("en-GB", { day: "2-digit", month: "long", year: "numeric" }) :
+                      new Date(newArticleData.isoDate).toLocaleDateString("en-GB", { day: "2-digit", month: "long", year: "numeric" })}
+                  </span>
+                </div>
+                {newArticleData.articleData.content ? (
+                  <div className={styles.modalArticleContent} dangerouslySetInnerHTML={{ __html: newArticleData.articleData.content }} />
+                ) : (
+                  <p>No content available.</p>
+                )}
               </div>
             </div>
           ) : selectedArticle ? ( // Use existing data at first, user gets some content instantly
             <div className={styles.modalArticle}>
-              {/* {selectedArticle["media:content"] && (
+              {selectedArticle["media:content"] && (
                 <Image
                   className={styles.modalArticleImage}
                   src={selectedArticle["media:content"]["$"].url}
                   width={selectedArticle["media:content"]["$"].width}
                   height={selectedArticle["media:content"]["$"].height}
                 />
-              )} */}
+              )}
               <div className={styles.modalArticleContentWrapper}>
                 <h3 className={styles.modalArticleTitle}>{selectedArticle.title}</h3>
                 <span className={styles.modalArticleAuthor}>{selectedArticle.author ? selectedArticle.author : selectedArticle.creator}</span>

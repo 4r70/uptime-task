@@ -12,6 +12,11 @@
   z-index: 9999;
 }
 
+.name {
+  font-size: 1.5rem;
+  font-size: clamp(1.5rem, 1.4rem + 0.5vw, 2rem);
+}
+
 .feedsButton {
   all: unset;
   font-size: 1.25rem;
@@ -60,7 +65,8 @@
   text-align: center;
 }
 
-.feedEditButton, .feedRemoveButton {
+.feedEditButton,
+.feedRemoveButton {
   all: unset;
   background-color: rgb(206, 224, 252);
   padding: .5em 1em;
@@ -69,7 +75,8 @@
   transition: all .3s ease-in-out;
 }
 
-.feedEditButton:hover, .feedRemoveButton:hover {
+.feedEditButton:hover,
+.feedRemoveButton:hover {
   background-color: #279AF1;
   color: white;
 }
@@ -124,6 +131,7 @@
   .feedEditButtons {
     flex-direction: column;
   }
+
   .feedEditButton {
     margin-right: 0;
     margin-bottom: .5rem;
@@ -134,19 +142,23 @@
   .feedsInputRow {
     flex-direction: column;
   }
+
   .addFeedButton {
     align-self: center;
     text-align: center;
   }
+
   .feedRow {
     flex-wrap: wrap;
     justify-content: center;
     gap: 1rem;
   }
+
   .feedColorPicker {
     order: 1;
     margin-right: 0;
   }
+
   .feedEditButtons {
     order: 2;
   }

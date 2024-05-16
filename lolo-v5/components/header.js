@@ -89,7 +89,7 @@ export default function Header({ onHeaderData }) {
     return (
         <>
             <header className={HeaderStyles.header}>
-                <h1>Lolo v5</h1> <button onClick={() => setFeedsOpen(true)} className={HeaderStyles.feedsButton}>Your feeds</button>
+                <h1 className={HeaderStyles.name}>Lolo v5</h1> <button onClick={() => setFeedsOpen(true)} className={HeaderStyles.feedsButton}>Your feeds</button>
             </header>
             <Modal isOpen={feedsOpen} onClose={() => setFeedsOpen(false)}>
                 <h3 className={HeaderStyles.feedsModalHeading}>Your feeds</h3>
