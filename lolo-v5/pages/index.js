@@ -199,7 +199,12 @@ export default function Home({ data, error, test }) {
                 />
               )}
               <div className={styles.modalArticleContentWrapper}>
-                <h3 className={styles.modalArticleTitle}>{newArticleData.articleData.title ? newArticleData.articleData.title : newArticleData.title}</h3>
+                <h3 className={styles.modalArticleTitle}>
+                  {newArticleData.articleData.title ? newArticleData.articleData.title : newArticleData.title}
+                  <button className={styles.modalArticleLinkIconWrapper} title="Copy link" onClick={() => navigator.clipboard.writeText(newArticleData.articleData.url ? newArticleData.articleData.url : newArticleData.link)}>
+                    <Image src={"/link.svg"} className={styles.modalArticleLinkIcon} width={30} height={30} />
+                  </button>
+                </h3>
                 <div className={styles.modalArticleAuthorDateWrapper}>
                   <span className={styles.modalArticleAuthor}>
                     {newArticleData.articleData.author ?
@@ -232,7 +237,12 @@ export default function Home({ data, error, test }) {
                 />
               )}
               <div className={styles.modalArticleContentWrapper}>
-                <h3 className={styles.modalArticleTitle}>{selectedArticle.title}</h3>
+                <h3 className={styles.modalArticleTitle}>
+                  {selectedArticle.title}
+                  <button className={styles.modalArticleLinkIconWrapper} title="Copy link" onClick={() => navigator.clipboard.writeText(selectedArticle.link)}>
+                    <Image src={"/link.svg"} className={styles.modalArticleLinkIcon} width={30} height={30} />
+                  </button>
+                </h3>
                 <div className={styles.modalArticleAuthorDateWrapper}>
                   <span className={styles.modalArticleAuthor}>{selectedArticle.author ? selectedArticle.author : selectedArticle.creator}</span>
                   <span className={styles.modalArticleDate}>
