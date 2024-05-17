@@ -8,7 +8,7 @@ export default async function handler(req, res) {
         });
 
         const articleData = await articleResponse.json();
-        console.log(articleData)
+        // console.log(articleData)
         res.status(200).json({ articleData });
     } catch (error) {
         console.error('Error fetching RSS feed:', error);

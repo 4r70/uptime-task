@@ -17,23 +17,8 @@ export async function getServerSideProps() {
         const data = [];
         const feed = await parser.parseURL(url);
         data.push(...feed.items)
-        // const parsedArticles = await Promise.all(data.map(async (item) => {
-        //     const articleResponse = await fetch("https://uptime-mercury-api.azurewebsites.net/webparser", {
-        //         method: 'POST',
-        //         headers: { "Content-type": "application/json" },
-        //         body: JSON.stringify({ "url": item.link })
-        //     });
-
-        //     const articleData = await articleResponse.json();
-        //     return {
-        //         ...item,
-        //         parsedContent: articleData
-        //     };
-        // }));
-        // console.log(parsedArticles)
         return {
             props: {
-                // data: parsedArticles,
                 data,
                 url,
             },
@@ -41,7 +26,6 @@ export async function getServerSideProps() {
     } catch (error) {
         return {
             props: {
-                // data: [],
                 data: {},
                 error: "Error fetching data: " + error,
                 url: "",
@@ -106,7 +90,7 @@ export default function Header({ onHeaderData }) {
                                 setFeedUrls(updatedFeedUrls);
                                 localStorage.setItem("feedUrls", JSON.stringify(updatedFeedUrls));
                             }}
-                        /> {/* style this later */}
+                        />
                         <span className={HeaderStyles.feedName}>{url}</span>
                         <div className={HeaderStyles.feedEditButtons}>
                             <button className={HeaderStyles.feedEditButton}
@@ -116,15 +100,13 @@ export default function Header({ onHeaderData }) {
                                     updatedFeedUrls.splice(index, 1);
                                     setFeedUrls(updatedFeedUrls);
                                     localStorage.setItem("feedUrls", JSON.stringify(updatedFeedUrls));
-                                }}
-                            >Edit</button> {/* implement better editing later */}
+                                }}>Edit</button>
                             <button className={HeaderStyles.feedRemoveButton}
                                 onClick={() => {
                                     const updatedFeedUrls = feedUrls.filter((_, i) => i !== index);
                                     setFeedUrls(updatedFeedUrls);
                                     localStorage.setItem("feedUrls", JSON.stringify(updatedFeedUrls));
-                                }}
-                            >Remove</button>
+                                }}>Remove</button>
                         </div>
                     </div>
                 )) : <span>No custom feeds added</span>}

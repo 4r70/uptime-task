@@ -189,7 +189,6 @@ export default function Home({ data, error, test }) {
         <Modal noPadding isOpen={articleOpen} onClose={() => { setArticleOpen(false); setSelectedArticle({}); setNewArticleData({}) }}>
           {newArticleData && Object.keys(newArticleData).length > 0 ? ( // Use new data (old data + new data combined) when it has been fetched
             <div className={styles.modalArticle}>
-              {console.log(newArticleData)}
               {newArticleData["media:content"] && (
                 <Image
                   className={styles.modalArticleImage}
