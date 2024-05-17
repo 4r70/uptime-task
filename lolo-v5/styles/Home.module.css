@@ -462,6 +462,7 @@
 .articleSnippet {
   font-size: 1rem;
   margin-bottom: 1rem;
+  word-break: break-word;
 }
 
 .articleBottomRow {
@@ -539,10 +540,6 @@
 
   .article:first-child {
     grid-column: 1;
-  }
-
-  .articleSnippet {
-    word-break: break-word;
   }
 
   .filterColumnsRow {

@@ -2,6 +2,7 @@
 
 ## What is it?
 It is a RSS viewer website that fetches its initial content from: [Flipboard](https://flipboard.com/@raimoseero/feed-nii8kd0sz.rss)
+It is available here: [Click](https://uptime-task.vercel.app/)
 
 ## How to use it?
 In the terminal:
