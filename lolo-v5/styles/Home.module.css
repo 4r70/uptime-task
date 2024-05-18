@@ -132,6 +132,7 @@
   width: min-content;
   transition: all .3s ease-in-out;
   align-self: flex-end;
+  color: white;
 }
 
 .modalArticleCloseButtonTop {

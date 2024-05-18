@@ -226,7 +226,7 @@ export default function Home({ data, error, test }) {
                 {newArticleData.articleData.content ? (
                   <div className={styles.modalArticleContent} dangerouslySetInnerHTML={{ __html: newArticleData.articleData.content }} />
                 ) : (
-                  <p>No content available.</p>
+                  <p style={{marginBottom: "1rem"}}>No content available.</p>
                 )}
                 <button
                   className={styles.modalArticleCloseButtonBottom}
