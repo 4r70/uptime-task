@@ -116,9 +116,36 @@
 }
 
 .modalArticle {
+  position: relative;
   display: flex;
   flex-direction: column;
   width: 100%;
+}
+
+.modalArticleCloseButtonTop, .modalArticleCloseButtonBottom {
+  all: unset;
+  cursor: pointer;
+  position: absolute;
+  background-color: #279AF1;
+  border-radius: 1rem;
+  padding: .75em 1.5em;
+  width: min-content;
+  transition: all .3s ease-in-out;
+  align-self: flex-end;
+}
+
+.modalArticleCloseButtonTop {
+  top: 1rem;
+  right: 1rem;
+}
+
+.modalArticleCloseButtonBottom {
+  position: static;
+}
+
+.modalArticleCloseButtonTop:hover, .modalArticleCloseButtonBottom:hover {
+  box-shadow: 0 1rem 2rem #279AF1;
+  scale: 1.01;
 }
 
 .modalArticleImage {

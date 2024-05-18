@@ -189,6 +189,11 @@ export default function Home({ data, error, test }) {
         <Modal noPadding isOpen={articleOpen} onClose={() => { setArticleOpen(false); setSelectedArticle({}); setNewArticleData({}) }}>
           {newArticleData && Object.keys(newArticleData).length > 0 ? ( // Use new data (old data + new data combined) when it has been fetched
             <div className={styles.modalArticle}>
+              <button
+                className={styles.modalArticleCloseButtonTop}
+                onClick={() => { setArticleOpen(false); setSelectedArticle({}); setNewArticleData({}) }}>
+                Close
+              </button>
               {newArticleData["media:content"] && (
                 <Image
                   className={styles.modalArticleImage}
@@ -223,10 +228,20 @@ export default function Home({ data, error, test }) {
                 ) : (
                   <p>No content available.</p>
                 )}
+                <button
+                  className={styles.modalArticleCloseButtonBottom}
+                  onClick={() => { setArticleOpen(false); setSelectedArticle({}); setNewArticleData({}) }}>
+                  Close
+                </button>
               </div>
             </div>
           ) : selectedArticle ? ( // Use existing data at first, user gets some content instantly
             <div className={styles.modalArticle}>
+              <button
+                className={styles.modalArticleCloseButtonTop}
+                onClick={() => { setArticleOpen(false); setSelectedArticle({}); setNewArticleData({}) }}>
+                Close
+              </button>
               {selectedArticle["media:content"] && (
                 <Image
                   className={styles.modalArticleImage}
@@ -252,6 +267,11 @@ export default function Home({ data, error, test }) {
                 <div className={styles.modalArticleLoading}></div>
                 <div className={styles.modalArticleLoading}></div>
                 <div className={styles.modalArticleLoading}></div>
+                <button
+                  className={styles.modalArticleCloseButtonBottom}
+                  onClick={() => { setArticleOpen(false); setSelectedArticle({}); setNewArticleData({}) }}>
+                  Close
+                </button>
               </div>
             </div>
           ) : (
