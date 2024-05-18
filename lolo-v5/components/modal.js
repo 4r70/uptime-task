@@ -1,7 +1,7 @@
 import ModalStyles from '../styles/Modal.module.css'
 import { useState, useRef, useEffect } from 'react'
 
-export default function Modal({ isOpen, children, onClose, noPadding }) {
+export default function Modal({ isOpen, children, onClose, noPadding, resize }) {
     const [modalOpen, setModalOpen] = useState(false);
     const modalRef = useRef(null);
 
@@ -37,7 +37,7 @@ export default function Modal({ isOpen, children, onClose, noPadding }) {
         modalOpen && (
             <div className={ModalStyles.modalBg}>
                 <div className={ModalStyles.modal}>
-                    <div ref={modalRef} className={ModalStyles.modalBox} style={noPadding && { padding: "0" }}>
+                    <div ref={modalRef} className={ModalStyles.modalBox} style={{ padding: noPadding && "0", resize: resize && "both" }} >
                         {children}
                     </div>
                 </div>

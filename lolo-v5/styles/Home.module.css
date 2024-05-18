@@ -228,6 +228,10 @@
   animation: loading 2s infinite ease-out;
 }
 
+.modalArticleLoading:last-of-type {
+  margin-bottom: 1rem;
+}
+
 @keyframes loading {
   0% {
     background-position: -4rem;

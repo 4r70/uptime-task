@@ -27,6 +27,9 @@
     width: 50rem;
     padding: 2rem;
     max-height: 80%;
+    min-height: 30%;
+    max-width: 90vw;
+    min-width: 30vw;
     overflow-y: auto;
 }
 
@@ -34,5 +37,13 @@
     .modalBox {
         width: 100%;
         padding: 2rem;
+        min-width: 40vw;
+    }
+}
+
+@media screen and (max-width: 40rem) {
+    .modalBox {
+        min-width: 60vw;
+        max-width: 100vmin;
     }
 }
